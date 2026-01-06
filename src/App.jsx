@@ -27,7 +27,7 @@ function App() {
       </header>
       <main>
         <Routes>
-          <Route path="/" element={<Home localData={localData} />} />
+          <Route path="/" element={<Home countries={countries} />} />
           <Route path="/country-detail" element={<CountryDetail />} />
           <Route path="/saved-countries" element={<SavedCountries />} />
         </Routes>
