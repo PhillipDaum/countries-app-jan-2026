@@ -17,7 +17,7 @@ export default function CountryCard({ country }) {
           </p>
           <p>
             <span className="bold">Capital:</span>
-            {` ${country.capital}`}
+            {` ${country.capital?.[0]}`} {/* picks the first item for that one country with two capitals */}
           </p>
         </div>
       </div>
