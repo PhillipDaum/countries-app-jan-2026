@@ -60,7 +60,7 @@ export default function Home({ allCountries }) {
       <div className="countries-grid">
         {/* better to use something other than the index like CCA3 */}
         {filteredCountries.map((country, index) => {
-          return <CountryCard key={index} country={country} />;
+          return <CountryCard key={country.cca3} country={country} />;
         })}
       </div>
     </>
