@@ -8,6 +8,7 @@
   --white: #fff;
   --light: #f0f0f0;
   --light-shadow: #bbbb;
+  --text-light-theme: #000; 
 
   /* dark color scheme */
   --dark-bg: #1a1a1a;
@@ -15,7 +16,6 @@
   --dark-shadow: #000000;
 }
 
-/* Utility Classes */
 /* This is for screen readers to read labels on forms and such */
 .visually-hidden {
   position: absolute;
@@ -27,7 +27,6 @@
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
-
 body {
   font-family: var(--main-font);
   margin: 0;
@@ -82,12 +81,29 @@ main {
   border-radius: 0.3rem;
   box-shadow: 3px 3px 3px var(--light-shadow);
   overflow: hidden; /* gets border radius from card on image tops */
+  height: 100%; /* fills entire surrounding link component */
 }
 .country-card img {
   width: 100%;
 }
 .country-card-contents {
   padding-left: 0.5rem;
+}
+.country-card-link {
+  text-decoration: none;
+  color: var(--text-light-theme);
+}
+
+/* COUNTRY DETAILS PAGE*/
+.country-detail-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.country-detail-page-card {
+  display: flex;
+  gap: 1rem;
+  padding-top: 2rem;
 }
 
 /* SAVED COUNTRIES PAGE */

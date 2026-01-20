@@ -1,8 +1,11 @@
-import '../App.css'
+import { Link } from "react-router-dom";
 
 export default function CountryCard({ country }) {
+
     
-    return (
+  return (
+    <Link className="country-card-link" to={`/country-detail/${country.name.common}`
+} >
       <div className="country-card">
         <img src={country.flags.png} alt={country.flags.alt} />
         <div className="country-card-contents">
@@ -17,9 +20,11 @@ export default function CountryCard({ country }) {
           </p>
           <p>
             <span className="bold">Capital:</span>
-            {` ${country.capital?.[0]}`} {/* picks the first item for that one country with two capitals */}
+            {` ${country.capital?.[0]}`}{" "}
+            {/* picks the first item for that one country with two capitals */}
           </p>
         </div>
       </div>
-    );
+    </Link>
+  );
 }
