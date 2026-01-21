@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function SavedCountries() {
   const [formData, setFormData] = useState({
@@ -7,12 +7,13 @@ export default function SavedCountries() {
     country: "",
     bio: "",
   });
+  const [newestUserData, setNewestUserData] = useState(null);
 
   //handleChange
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
-  }
+  };
 
   //handleSubmit - reset form data
   const handleSubmit = (e) => {
@@ -24,10 +25,37 @@ export default function SavedCountries() {
       country: "",
       bio: "",
     });
-  }
+  };
+
+  // get newest user form data
+  const getNewestUserData = async () => {
+    try {
+      const response = await fetch(
+        "/api/get-newest-user",
+        {
+          method: "GET",
+        },
+      );
+      const data = await response.json();
+      const userData = data[0];
+      setNewestUserData({
+        fullName: userData.name,
+        email: userData.email,
+        country: userData.country_name,
+        bio: userData.bio,
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getNewestUserData();
+  }, []);
 
   return (
     <>
+      {newestUserData && <h2>Welcome {newestUserData.fullName}</h2>}
       <h2>My Saved Countries</h2>
       <form onSubmit={handleSubmit}>
         <fieldset>
