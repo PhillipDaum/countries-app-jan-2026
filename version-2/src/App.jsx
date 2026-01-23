@@ -55,7 +55,10 @@ function App() {
             path="/country-detail/:countryName"
             element={<CountryDetail allCountries={allCountries} />}
           />
-          <Route path="/saved-countries" element={<SavedCountries />} />
+          <Route
+            path="/saved-countries"
+            element={<SavedCountries allCountries={allCountries} />}
+          />
         </Routes>
       </main>
     </div>

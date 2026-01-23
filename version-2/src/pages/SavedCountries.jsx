@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
+import CountryCard from "../components/CountryCard";
 
-export default function SavedCountries() {
+export default function SavedCountries({ allCountries }) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -8,6 +9,7 @@ export default function SavedCountries() {
     bio: "",
   });
   const [newestUserData, setNewestUserData] = useState(null);
+  const [savedCountries, setSavedCountries] = useState(null);
 
   //handleChange
   const handleFormChange = (e) => {
@@ -27,15 +29,12 @@ export default function SavedCountries() {
     });
   };
 
-  // get newest user form data
+  // get newest user from API
   const getNewestUserData = async () => {
     try {
-      const response = await fetch(
-        "/api/get-newest-user",
-        {
-          method: "GET",
-        },
-      );
+      const response = await fetch("/api/get-newest-user", {
+        method: "GET",
+      });
       const data = await response.json();
       const userData = data[0];
       setNewestUserData({
@@ -49,14 +48,46 @@ export default function SavedCountries() {
     }
   };
 
+  // get saved countries from API
+  const getSavedCountries = async () => {
+    if (allCountries) {
+      try {
+        const response = await fetch("/api/get-all-saved-countries", {
+          method: "GET",
+        });
+        const data = await response.json();
+        const fullCountriesArr = data.map((item) =>
+          allCountries.find(
+            (country) => item.country_name === country.name.common,
+          ),
+        );
+        setSavedCountries(fullCountriesArr);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  };
+
   useEffect(() => {
     getNewestUserData();
   }, []);
+  useEffect(() => {
+    getSavedCountries();
+  }, [allCountries]);
 
+  console.log(savedCountries)
+  
   return (
     <>
       {newestUserData && <h2>Welcome {newestUserData.fullName}</h2>}
       <h2>My Saved Countries</h2>
+      <div className="saved-countries-container">
+        {savedCountries &&
+          savedCountries.map((country) => {
+            return <CountryCard country={country} />;
+            // getting a bug here when key={country.cca3} is added
+          })}
+      </div>
       <form onSubmit={handleSubmit}>
         <fieldset>
           <legend>My Profile</legend>

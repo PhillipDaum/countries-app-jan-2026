@@ -8,12 +8,36 @@
   --white: #fff;
   --light: #f0f0f0;
   --light-shadow: #bbbb;
-  --text-light-theme: #000; 
+  --text-light-theme: #000;
+
+  --box-shadow: 0px 0px 6px 2px hsl(0, 0%, 80%);
 
   /* dark color scheme */
   --dark-bg: #1a1a1a;
   --dark-element: #2b2b2b;
   --dark-shadow: #000000;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--main-font);
+  margin: 0;
+  padding: 0;
+  background-color: var(--light);
+}
+
+img {
+  max-width: 100%;
+}
+
+main,
+nav {
+  margin: 0 auto;
+  padding: 2rem 1.2rem;
+  max-width: 1600px;
 }
 
 /* This is for screen readers to read labels on forms and such */
@@ -27,16 +51,20 @@
   clip: rect(0, 0, 0, 0);
   border: 0;
 }
-body {
-  font-family: var(--main-font);
-  margin: 0;
-  padding: 0;
-  background-color: var(--light);
+
+/* REUSED */
+.link-as-button {
+  text-decoration: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  background-color: var(--white);
+  border: 2px solid var(--light-shadow);
+  border-radius: 5px;
+  box-shadow: 0 0 3px 1px var(--light-shadow);
 }
 
 /* header and nav styles */
 .nav-header {
-  padding: 1rem 2rem;
   background-color: var(--white);
   box-shadow: 0px 4px 4px var(--light-shadow);
 }
@@ -83,9 +111,6 @@ main {
   overflow: hidden; /* gets border radius from card on image tops */
   height: 100%; /* fills entire surrounding link component */
 }
-.country-card img {
-  width: 100%;
-}
 .country-card-contents {
   padding-left: 0.5rem;
 }
@@ -95,18 +120,26 @@ main {
 }
 
 /* COUNTRY DETAILS PAGE*/
-.country-detail-page {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
 .country-detail-page-card {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr;
   gap: 1rem;
   padding-top: 2rem;
 }
+.country-detail-page-card img {
+  border-radius: 0.5rem;
+  box-shadow: var(--box-shadow);
+}
 
 /* SAVED COUNTRIES PAGE */
+.saved-countries-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+form { 
+  padding-top: 1rem;
+}
 form fieldset {
   display: flex;
   flex-direction: column;
@@ -129,7 +162,7 @@ textarea {
 }
 button {
   cursor: pointer;
-  padding: .5rem;
+  padding: 0.5rem;
   background-color: var(--white);
   border: 2px solid var(--light-shadow);
   border-radius: 5px;
@@ -145,9 +178,15 @@ button:hover {
   .countries-grid {
     grid-template-columns: repeat(2, 1fr);
   }
+  .country-detail-page-card {
+    grid-template-columns: 3fr 2fr;
+  }
+  .saved-countries-container {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 @media (min-width: 900px) {
-  .countries-grid {
+  .countries-grid, .saved-countries-container {
     grid-template-columns: repeat(4, 1fr);
   }
 }

@@ -7,7 +7,7 @@ export default function CountryCard({ country }) {
     <Link className="country-card-link" to={`/country-detail/${country.name.common}`
 } >
       <div className="country-card">
-        <img src={country.flags.png} alt={country.flags.alt} />
+        <img src={country.flags.svg} alt={country.flags.alt} />
         <div className="country-card-contents">
           <h3>{country.name.common}</h3>
           <p>
