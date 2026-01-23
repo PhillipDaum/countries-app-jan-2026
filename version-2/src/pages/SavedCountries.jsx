@@ -50,21 +50,19 @@ export default function SavedCountries({ allCountries }) {
 
   // get saved countries from API
   const getSavedCountries = async () => {
-    if (allCountries) {
-      try {
-        const response = await fetch("/api/get-all-saved-countries", {
-          method: "GET",
-        });
-        const data = await response.json();
-        const fullCountriesArr = data.map((item) =>
-          allCountries.find(
-            (country) => item.country_name === country.name.common,
-          ),
-        );
-        setSavedCountries(fullCountriesArr);
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      const response = await fetch("/api/get-all-saved-countries", {
+        method: "GET",
+      });
+      const data = await response.json();
+      const fullCountriesArr = data.map((item) =>
+        allCountries.find(
+          (country) => item.country_name === country.name.common,
+        ),
+      );
+      setSavedCountries(fullCountriesArr);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -72,11 +70,11 @@ export default function SavedCountries({ allCountries }) {
     getNewestUserData();
   }, []);
   useEffect(() => {
-    getSavedCountries();
+    if (allCountries) {
+      getSavedCountries();
+    }
   }, [allCountries]);
 
-  console.log(savedCountries)
-  
   return (
     <>
       {newestUserData && <h2>Welcome {newestUserData.fullName}</h2>}
@@ -84,8 +82,8 @@ export default function SavedCountries({ allCountries }) {
       <div className="saved-countries-container">
         {savedCountries &&
           savedCountries.map((country) => {
-            return <CountryCard country={country} />;
-            // getting a bug here when key={country.cca3} is added
+            return <CountryCard country={country} key={country.cca3} />;
+            // getting a bug here when  is added
           })}
       </div>
       <form onSubmit={handleSubmit}>

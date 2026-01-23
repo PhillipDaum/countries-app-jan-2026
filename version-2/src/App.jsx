@@ -8,7 +8,7 @@ import localData from "../localData"; // local data
 import "./App.css"; // styles
 
 function App() {
-  const [allCountries, setAllCountries] = useState([]);
+  const [allCountries, setAllCountries] = useState(null);
 
   const fetchCountryData = async () => {
     try {
