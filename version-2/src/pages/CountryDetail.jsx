@@ -1,12 +1,14 @@
 import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 
-export default function CountryDetail({ allCountries }) {
+export default function CountryDetail({ allCountries, savedCountries }) {
   const [viewedAmount, setViewedAmount] = useState(null);
   const [isSaved, setIsSaved] = useState(null);
   const countryName = useParams().countryName;
-  const oneCountry = allCountries && allCountries.find((country) => country.name.common === countryName);
- 
+  const oneCountry = allCountries
+    ? allCountries.find((country) => country.name.common === countryName)
+    : null;
+
   const updateCountryCount = async () => {
     const response = await fetch("/api/update-one-country-count", {
       method: "POST",
@@ -15,11 +17,18 @@ export default function CountryDetail({ allCountries }) {
       },
       body: JSON.stringify({
         country_name: oneCountry.name.common,
-      })
+      }),
     });
     const result = await response.json();
     setViewedAmount(result.count);
-  }
+  };
+
+  const isItSavedOrNot = () => {
+    if (savedCountries.find((country) => country.name.common === countryName)) {
+      setIsSaved(true);
+    }
+    console.log("is it saved:", isSaved);
+  };
 
   const handleSave = async () => {
     const response = await fetch("/api/save-one-country", {
@@ -29,19 +38,40 @@ export default function CountryDetail({ allCountries }) {
       },
       body: JSON.stringify({
         country_name: oneCountry.name.common,
-      })
+      }),
     });
-    const result = await result.text();
-    console.log(result)
-  } 
-  
-  
+    const result = await response.text();
+    setIsSaved(true);
+    console.log(result);
+  };
+
+  const handleUnSave = async () => {
+    const response = await fetch("/api/unsave-one-country", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        country_name: oneCountry.name.common,
+      }),
+    });
+    const result = await response.text();
+    setIsSaved(false);
+    console.log(result);
+  };
+
   useEffect(() => {
     if (oneCountry) {
       updateCountryCount();
-    } 
-  }, [oneCountry])
-  
+    }
+  }, [oneCountry]);
+
+  useEffect(() => {
+    if (savedCountries && countryName) {
+      isItSavedOrNot();
+    }
+  }, [savedCountries]); // do I have too much in this dependency array?
+
   return (
     <>
       {oneCountry && (
@@ -53,9 +83,11 @@ export default function CountryDetail({ allCountries }) {
             <img src={oneCountry.flags.svg} alt={oneCountry.flags.alt} />
             <div className="country-card-contents">
               <h3>{oneCountry.name.common}</h3>
-              {/* add onClick function to save country */}
-              <button onClick={handleSave}>🩶</button>
-              <button onClick={handleSave}>❤️</button>
+              {isSaved ? (
+                <button onClick={handleUnSave}>❤️</button>
+              ) : (
+                <button onClick={handleSave}>🩶</button>
+              )}
               <p>
                 <span className="bold">Population:</span>
                 {` ${oneCountry.population.toLocaleString()}`}
