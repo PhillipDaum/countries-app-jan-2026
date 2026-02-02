@@ -20,9 +20,19 @@ export default function CountryDetail({ allCountries }) {
     setViewedAmount(result.count);
   }
 
-  const handleSave = () => console.log(`${oneCountry} is not saved... yet
-                                              \n this feature will be coming soon
-                                              \n act now and subscribe for future updates`)
+  const handleSave = async () => {
+    const response = await fetch("/api/save-one-country", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        country_name: oneCountry.name.common,
+      })
+    });
+    const result = await result.text();
+    console.log(result)
+  } 
   
   
   useEffect(() => {
