@@ -7,7 +7,7 @@ export default function Home({ allCountries }) {
     region: ""
   }); 
   
-  const filteredCountries = allCountries.filter(country => {
+  const filteredCountries = allCountries && allCountries.filter(country => {
     // match text search
     const matchSearch = filters.search === "" || new RegExp(filters.search, "i").test(country.name.common);
 
@@ -59,7 +59,7 @@ export default function Home({ allCountries }) {
       </div>
       <div className="countries-grid">
         {/* better to use something other than the index like CCA3 */}
-        {filteredCountries.map((country, index) => {
+        {filteredCountries && filteredCountries.map((country, index) => {
           return <CountryCard key={country.cca3} country={country} />;
         })}
       </div>

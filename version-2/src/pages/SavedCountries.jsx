@@ -11,16 +11,34 @@ export default function SavedCountries({ allCountries }) {
   const [newestUserData, setNewestUserData] = useState(null);
   const [savedCountries, setSavedCountries] = useState(null);
 
-  //handleChange
+  // handleChange
   const handleFormChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }));
   };
 
-  //handleSubmit - reset form data
+  // store newest user
+  const storeUserData = async (data) => {
+    const response = await fetch("/api/add-one-user", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: data.name,
+        country_name: data.country,
+        email: data.email,
+        bio: data.bio,
+      }),
+    });
+    const result = await response.text();
+    console.log("result:", result);
+  };
+
+  // handleSubmit - reset form data
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    storeUserData(formData);
     setFormData({
       name: "",
       email: "",
