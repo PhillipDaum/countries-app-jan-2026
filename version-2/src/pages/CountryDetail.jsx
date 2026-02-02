@@ -1,12 +1,35 @@
+import { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 
-export default function CountryDetail( { allCountries }) {
+export default function CountryDetail({ allCountries }) {
+  const [viewedAmount, setViewedAmount] = useState(null);
   const countryName = useParams().countryName;
   const oneCountry = allCountries && allCountries.find((country) => country.name.common === countryName);
  
+  const updateCountryCount = async () => {
+    const response = await fetch("/api/update-one-country-count", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        country_name: oneCountry.name.common,
+      })
+    });
+    const result = await response.json();
+    setViewedAmount(result.count);
+  }
+
   const handleSave = () => console.log(`${oneCountry} is not saved... yet
                                               \n this feature will be coming soon
                                               \n act now and subscribe for future updates`)
+  
+  
+  useEffect(() => {
+    if (oneCountry) {
+      updateCountryCount();
+    } 
+  }, [oneCountry])
   
   return (
     <>
@@ -34,7 +57,12 @@ export default function CountryDetail( { allCountries }) {
                 {` ${oneCountry.capital?.[0]}`}{" "}
                 {/* picks the first item for that one country with two capitals */}
               </p>
-              {/* later put viewed count here */}
+              {viewedAmount && (
+                <p>
+                  <span className="bold">Viewed:</span>
+                  {` ${viewedAmount}`}
+                </p>
+              )}
               {/* later put border countries here */}
             </div>
           </div>
