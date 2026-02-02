@@ -3,6 +3,7 @@ import { useParams, Link } from "react-router-dom";
 
 export default function CountryDetail({ allCountries }) {
   const [viewedAmount, setViewedAmount] = useState(null);
+  const [isSaved, setIsSaved] = useState(null);
   const countryName = useParams().countryName;
   const oneCountry = allCountries && allCountries.find((country) => country.name.common === countryName);
  
@@ -53,7 +54,8 @@ export default function CountryDetail({ allCountries }) {
             <div className="country-card-contents">
               <h3>{oneCountry.name.common}</h3>
               {/* add onClick function to save country */}
-              <button onClick={handleSave}>Save</button>
+              <button onClick={handleSave}>🩶</button>
+              <button onClick={handleSave}>❤️</button>
               <p>
                 <span className="bold">Population:</span>
                 {` ${oneCountry.population.toLocaleString()}`}

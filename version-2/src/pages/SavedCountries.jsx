@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import CountryCard from "../components/CountryCard";
 
-export default function SavedCountries({ allCountries }) {
+export default function SavedCountries({ savedCountries }) {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -9,7 +9,6 @@ export default function SavedCountries({ allCountries }) {
     bio: "",
   });
   const [newestUserData, setNewestUserData] = useState(null);
-  const [savedCountries, setSavedCountries] = useState(null);
 
   // handleChange
   const handleFormChange = (e) => {
@@ -66,32 +65,9 @@ export default function SavedCountries({ allCountries }) {
     }
   };
 
-  // get saved countries from API
-  const getSavedCountries = async () => {
-    try {
-      const response = await fetch("/api/get-all-saved-countries", {
-        method: "GET",
-      });
-      const data = await response.json();
-      const fullCountriesArr = data.map((item) =>
-        allCountries.find(
-          (country) => item.country_name === country.name.common,
-        ),
-      );
-      setSavedCountries(fullCountriesArr);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     getNewestUserData();
   }, []);
-  useEffect(() => {
-    if (allCountries) {
-      getSavedCountries();
-    }
-  }, [allCountries]);
 
   return (
     <>
