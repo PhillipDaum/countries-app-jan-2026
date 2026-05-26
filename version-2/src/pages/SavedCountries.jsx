@@ -1,5 +1,8 @@
 import { useState, useEffect } from "react";
 import CountryCard from "../components/CountryCard";
+import localData from "../../localData"
+
+// I love cheese
 
 export default function SavedCountries({ savedCountries }) {
   const [formData, setFormData] = useState({
